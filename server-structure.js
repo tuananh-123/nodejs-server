@@ -1,0 +1,20 @@
+/my-app
+  /config
+    config.js
+  /controllers
+    authController.js
+    itemController.js
+  /middlewares
+    authMiddleware.js
+    errorHandler.js
+  /models
+    userModel.js
+    itemModel.js
+  /routes
+    authRoutes.js
+    itemRoutes.js
+  /utils
+    jwtUtils.js
+  .env
+  server.js
+  package.json
