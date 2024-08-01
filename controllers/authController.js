@@ -16,9 +16,7 @@ const login = [
 	body('username').isString(),
 	body('password').isString(),
 	(req, res) => {
-		console.log(req.body);
 		const errors = validationResult(req);
-		console.log(errors);
 		if (!errors.isEmpty()){
 			return res.status(400).json({ error: errors.array() });
 		}
