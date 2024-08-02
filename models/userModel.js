@@ -1,8 +1,21 @@
-const bcrypt = require('bcrypt');
+class User {
+	constructor(UserID, UserName, Email, DateJoined, LastLogin){
+		this.userID = UserID,
+		this.userName = UserName,
+		this.email = Email,
+		this.dateJoined = DateJoined,
+		this.lastLogin = LastLogin
+	}
+	
+	static fromData(data) {
+		return new User(
+			data.UserID,
+			data.UserName,
+			data.Email,
+			data.DateJoined,
+			data.LastLogin
+		);
+	}
+}
 
-const users = [
-    { id: 1, username: 'user1', password: bcrypt.hashSync('password1', 10) },
-    { id: 2, username: 'user2', password: bcrypt.hashSync('password2', 10) },
-];
-
-module.exports = users;
+module.exports = User;
