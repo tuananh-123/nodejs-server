@@ -18,7 +18,7 @@ CREATE TABLE [User] (
 );
 GO
 
-CREATE TABLE ChatSession (
+CREATE TABLE [ChatSession] (
     SessionID INT IDENTITY(1,1) PRIMARY KEY,
     UserID INT,
     StartTime DATETIME DEFAULT GETDATE(),
@@ -27,7 +27,7 @@ CREATE TABLE ChatSession (
 );
 GO
 
-CREATE TABLE Message (
+CREATE TABLE [Message] (
     MessageID INT IDENTITY(1,1) PRIMARY KEY,
     SessionID INT,
     Sender NVARCHAR(10) CHECK (Sender IN ('User', 'Bot')) NOT NULL,
@@ -36,3 +36,5 @@ CREATE TABLE Message (
     FOREIGN KEY (SessionID) REFERENCES ChatSession(SessionID)
 );
 GO
+
+
