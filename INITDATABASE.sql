@@ -9,32 +9,55 @@ USE ChatBotDB;
 GO
 
 CREATE TABLE [User] (
-    UserID INT IDENTITY(1,1) PRIMARY KEY,
+    UserID UNIQUEIDENTIFIER PRIMARY KEY,
     UserName NVARCHAR(50) NOT NULL,
     Email NVARCHAR(100) UNIQUE NOT NULL,
+	EmailVerified BIT NOT NULL,
     PasswordHash NVARCHAR(255) NOT NULL,
-    DateJoined DATETIME DEFAULT GETDATE(),
-    LastLogin DATETIME DEFAULT GETDATE()
+    DateJoined DATETIME NOT NULL,
+    LastLogin DATETIME NOT NULL,
+	SubscriptionType INT NOT NULL
 );
 GO
 
-CREATE TABLE [ChatSession] (
-    SessionID INT IDENTITY(1,1) PRIMARY KEY,
-    UserID INT,
-    StartTime DATETIME DEFAULT GETDATE(),
-    EndTime DATETIME NULL,
-    FOREIGN KEY (UserID) REFERENCES [User](UserID)
+CREATE TABLE [Session] (
+	SessionID UNIQUEIDENTIFIER PRIMARY KEY,
+	Token VARCHAR(MAX) NOT NULL,
+	UserAgent VARCHAR(100) NOT NULL,
+	LastLogin DATETIME NOT NULL,
+	Status INT NOT NULL,
+	UserID UNIQUEIDENTIFIER NOT NULL,
+	FOREIGN KEY (UserID) REFERENCES [User] (UserID)
 );
 GO
 
-CREATE TABLE [Message] (
-    MessageID INT IDENTITY(1,1) PRIMARY KEY,
-    SessionID INT,
-    Sender NVARCHAR(10) CHECK (Sender IN ('User', 'Bot')) NOT NULL,
-    Timestamp DATETIME DEFAULT GETDATE(),
-    Content NVARCHAR(MAX) NOT NULL,
-    FOREIGN KEY (SessionID) REFERENCES ChatSession(SessionID)
+CREATE TABLE [RecycleBin] (
+	RecycleBinID UNIQUEIDENTIFIER PRIMARY KEY,
+	TableAgent VARCHAR(50) NOT NULL,
+	ModelAgent VARCHAR(50) NOT NULL,
+	JSON NVARCHAR(MAX) NOT NULL,
+	DeleteAt DATETIME NOT NULL,
+	DeleteBy NVARCHAR(50) NOT NULL,
+	DeleteByID UNIQUEIDENTIFIER NOT NULL
 );
 GO
+-- CREATE TABLE [ChatSession] (
+    -- SessionID INT IDENTITY(1,1) PRIMARY KEY,
+    -- UserID INT,
+    -- StartTime DATETIME DEFAULT GETDATE(),
+    -- EndTime DATETIME NULL,
+    -- FOREIGN KEY (UserID) REFERENCES [User](UserID)
+-- );
+-- GO
+
+-- CREATE TABLE [Message] (
+    -- MessageID INT IDENTITY(1,1) PRIMARY KEY,
+    -- SessionID INT,
+    -- Sender NVARCHAR(10) CHECK (Sender IN ('User', 'Bot')) NOT NULL,
+    -- Timestamp DATETIME DEFAULT GETDATE(),
+    -- Content NVARCHAR(MAX) NOT NULL,
+    -- FOREIGN KEY (SessionID) REFERENCES ChatSession(SessionID)
+-- );
+-- GO
 
 

@@ -5,6 +5,8 @@ const authRoutes = require('./routes/authRoutes');
 const itemRoutes = require('./routes/itemRoutes');
 const userRoutes = require('./routes/userRoutes');
 const { pool } = require('./DBContext/dbContext');
+const errorMiddleware = require('./middlewares/error.middleware');
+const responseMiddleware = require('./middlewares/response.middleware');
 const sql = require('mssql');
 const app = express();
 
@@ -16,6 +18,9 @@ app.use('/users', userRoutes);
 app.get('/', (req, res) => {
 	res.send("Hello, Express!");
 });
+
+app.use(errorMiddleware);
+app.use(responseMiddleware);
 
 const startServer = async () => {
     try {
