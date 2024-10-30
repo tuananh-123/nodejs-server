@@ -10,6 +10,7 @@ const { pool } = require('../DBContext/dbContext');
 const userService = require('../services/user.service');
 const User = require('../models/userModel');
 const { randomUUID } = require('crypto');
+const testService = require('../utils/services/test');
 
 const authenticateUser = (username, password) => {
 	const user = users.find(x => x.username === username);
@@ -110,6 +111,38 @@ const signUp = async (req, res, next) => {
 	}
 }
 
+const test = async (req, res) => {
+	try {
+		
+		const text = "oi doi oi!";
+		let content = "";
+		let index = 0;
+		const speed = 1; // Tốc độ truyền từng ký tự (ms)
+		
+		// Thiết lập header để cho phép streaming
+		res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
+		res.setHeader('Cache-Control', 'no-cache');
+		res.setHeader('Keep-Alive', 'timeout=10');
+		
+		const intervalId = setInterval(() => {
+			if (index < text.length){
+				content += text[index++];
+				res.write(`data: ${content}\n\n`);
+			}else {
+				clearInterval(intervalId);
+                res.end();
+			}
+		}, speed);
+
+		req.on('close', () => {
+			clearInterval(intervalId);
+			res.status(200).end();
+		})
+	}catch (err){
+		next(err);
+	}
+}
+
 const updateUser = async (req, res, next) => {
 	const transaction = new sql.Transaction(pool);
 	const ps = new sql.PreparedStatement(transaction);
@@ -137,4 +170,4 @@ const updateUser = async (req, res, next) => {
 	}
 };
 
-module.exports = { login, verifyEmail, signUp, updateUser };
+module.exports = { login, verifyEmail, signUp, updateUser, test };
