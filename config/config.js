@@ -9,5 +9,6 @@ module.exports = {
 	db_user: process.env.DB_USER || "",
 	db_password: process.env.DB_PASSWORD || "",
 	root_upload_dir: process.env.ROOT_UPLOAD_DIR || "",
-	video_upload_dir: process.env.VIDEO_UPLOAD_DIR || ""
+	video_upload_dir: process.env.VIDEO_UPLOAD_DIR || "",
+	video_transcode_dir:  process.env.VIDEO_TRANSCODE_DIR || ""
 }
